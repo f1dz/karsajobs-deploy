@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karsajobs-ui
+  namespace: karsajobs-ns
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: karsajobs-ui
+        image: ghcr.io/f1dz/karsajobs-ui:latest
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "750m"
+        ports:
+        - containerPort: 8000
+        env:
+          - name: VUE_APP_BACKEND
+            value: http://127.0.0.1:51252
